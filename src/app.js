@@ -5,6 +5,7 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
+import { PORT } from './config';
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
