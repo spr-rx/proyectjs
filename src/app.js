@@ -5,7 +5,7 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
-import { PORT } from './config';
+
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -52,7 +52,7 @@ app.use(session({
 }));
 
 
-const PORT = 3302;
+const  PORT = process.env.PORT || 3000
 
 app.set('view engine', 'ejs');
 
