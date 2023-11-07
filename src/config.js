@@ -1,8 +1,8 @@
-export const PORT = process.env.PORT || 3000
+module.export =  PORT = process.env.PORT || 3000
 
-export const DB_HOST = process.env.DB_HOST || "localhost"
-export const DB_USER = process.env.DB_USER || "root"
-export const DB_PASSWORD = process.env.DB_PASSWORD || ""
-export const DB_NAME = process.env.DB_NAME || "spr"
-export const DB_PORT = process.env.DB_PORT || 3306
+module.export = DB_HOST = process.env.DB_HOST || "localhost"
+module.export = DB_USER = process.env.DB_USER || "root"
+module.export = DB_PASSWORD = process.env.DB_PASSWORD || " "
+module.export = DB_NAME = process.env.DB_NAME || "spr"
+module.export = DB_PORT = process.env.DB_PORT || 3306
 

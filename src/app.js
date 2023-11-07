@@ -5,18 +5,12 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
-const {
-    DB_HOST,
-    DB_NAME,
-    DB_PORT,
-    DB_PASSWORD,
-    DB_USER
-} = require ('../config');
+const db = require ('./config');
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
 const multer = require('multer');
-
+ 
 const querys = require('./querys');
 const mysql = require('mysql2');
 const router = require('./routes/usuarios');
@@ -246,11 +240,11 @@ app.use('/usuarios', requireAuth, usuarios)
 
 
 const connection = mysql.createConnection({
-    host: DB_HOST,
-    port: DB_PORT,
-    database: DB_NAME,
-    user: DB_USER,
-    password: DB_PASSWORD   
+    host: db.DB_HOST,
+    port: db.DB_PORT,
+    database: db.DB_NAME,
+    user: db.DB_USER,
+    password: db.DB_PASSWORD   
 });
 
 
