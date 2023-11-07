@@ -6,6 +6,15 @@ const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
 
+const {
+    DB_HOST,
+    DB_NAME,
+    DB_PORT,
+    DB_PASSWORD,
+    DB_USER
+} = require ('./config.js');
+
+
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -238,13 +247,6 @@ app.use('/usuarios', requireAuth, usuarios)
 
 
 
-import {
-    DB_HOST,
-    DB_NAME,
-    DB_PORT,
-    DB_PASSWORD,
-    DB_USER
-} from './config.js'
 
 const connection = mysql.createConnection({
     host: DB_HOST,

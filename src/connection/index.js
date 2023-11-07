@@ -3,13 +3,14 @@ const mysql = require('mysql2/promise');
 
 //require('dotenv').config();
 
-import {
+const {
     DB_HOST,
     DB_NAME,
     DB_PORT,
     DB_PASSWORD,
     DB_USER
-} from './config.js'
+} = require ('./config.js');
+
 
 const connection = mysql.createConnection({
     host: DB_HOST,
