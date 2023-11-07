@@ -8,10 +8,13 @@ const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
 const connection = mysql.createConnection({
     host: "roundhouse.proxy.rlwy.net",
-    port: 41271,
+    port: 47689,
     database: "railway",
     user: "root",
-    password: "1h12afAdH6eGbd1A6653-cAEGdbD51Df"   
+    password: "gH5DcCf42-Ff2gE3hAbE1h5664bFB55g",
+
+    
+    
 });
 /*
 const connection = mysql.createConnection({

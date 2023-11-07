@@ -242,17 +242,16 @@ app.use('/usuarios', requireAuth, usuarios)
 
 const connection = mysql.createConnection({
     host: "roundhouse.proxy.rlwy.net",
-    port: 41271,
+    port: 47689,
     database: "railway",
     user: "root",
-    password: "1h12afAdH6eGbd1A6653-cAEGdbD51Df",
+    password: "gH5DcCf42-Ff2gE3hAbE1h5664bFB55g",
 
-    if (error) {
-        console.error('Error de conexión:', error.message);
-        return;
-      },
+    
     
 });
+
+
 
 /*
 
