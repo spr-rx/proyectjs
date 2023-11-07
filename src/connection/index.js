@@ -1,4 +1,4 @@
-const mysql = require('mysql2/promise');
+const mysql = require('mysql2');
 
 
 //require('dotenv').config();
@@ -6,12 +6,13 @@ const mysql = require('mysql2/promise');
 const config = require('../config');
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
-const connection = mysql.createConnection({
-    host: "roundhouse.proxy.rlwy.net",
-    port: 47689,
-    database: "railway",
-    user: "root",
-    password: "gH5DcCf42-Ff2gE3hAbE1h5664bFB55g",
+
+const connection =  mysql.createPool({
+    host: DB_HOST,
+    port: DB_PORT,
+    database: DB_NAME,
+    user: DB_USER,
+    password: DB_PASSWORD,
 
     
     
@@ -25,5 +26,5 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASSWORD
 });*/
 
-module.exports = connection;
+module.exports = connection.promise();
 

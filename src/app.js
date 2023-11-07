@@ -240,6 +240,18 @@ app.use('/usuarios', requireAuth, usuarios)
 
 
 
+
+const connection = mysql.createConnection({
+    host: DB_HOST,
+    port: DB_PORT,
+    database: DB_NAME,
+    user: DB_USER,
+    password: DB_PASSWORD,
+
+    
+    
+});
+/*
 const connection = mysql.createConnection({
     host: "roundhouse.proxy.rlwy.net",
     port: 47689,
@@ -249,7 +261,7 @@ const connection = mysql.createConnection({
 
     
     
-});
+});*/
 
 
 
