@@ -292,7 +292,7 @@ async function uploadFile(file, id){
 
     try {
 
-        const response = await fetch("http://192.168.1.21:3302/usuarios/carpetas/crear_reportes/<%= id %>/<%= id_usuario %>",{
+        const response = await fetch("https://www.reportes.spr-rx.com/usuarios/carpetas/crear_reportes/<%= id %>/<%= id_usuario %>",{
             method: "POST",
             body: formData,
 
