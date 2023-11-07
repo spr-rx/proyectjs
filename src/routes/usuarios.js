@@ -10,13 +10,8 @@ const mysql = require('mysql2');
 
 
 
-const {
-    DB_HOST,
-    DB_NAME,
-    DB_PORT,
-    DB_PASSWORD,
-    DB_USER
-} = require ('../config');
+const config = require('../config');
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
 
 router.get('/', async (req, res) => {

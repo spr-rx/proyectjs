@@ -5,7 +5,8 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
-const db = require ('./config');
+const config = require('./config');
+const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');
@@ -240,11 +241,11 @@ app.use('/usuarios', requireAuth, usuarios)
 
 
 const connection = mysql.createConnection({
-    host: db.DB_HOST,
-    port: db.DB_PORT,
-    database: db.DB_NAME,
-    user: db.DB_USER,
-    password: db.DB_PASSWORD   
+    host: DB_HOST,
+    port: DB_PORT,
+    database: DB_NAME,
+    user: DB_USER,
+    password: DB_PASSWORD   
 });
 
 
