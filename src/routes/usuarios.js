@@ -8,6 +8,17 @@ const bcrypt = require('bcrypt');
 const saltRounds = 10;
 const mysql = require('mysql2');
 
+
+
+import {
+    DB_HOST,
+    DB_NAME,
+    DB_PORT,
+    DB_PASSWORD,
+    DB_USER
+} from './config.js'
+
+
 router.get('/', async (req, res) => {
     const query = await querys.getAllUsuarios();
     return res.status(200).json(query)
@@ -100,14 +111,23 @@ router.get('/user', async (req, res) => {
     return res.status(200).json(query)
 })
 
-require('dotenv').config();
+
+const connection = mysql.createConnection({
+    host: DB_HOST,
+    port: DB_PORT,
+    database: DB_NAME,
+    user: DB_USER,
+    password: DB_PASSWORD   
+});
+
+/*
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,
     database: process.env.DB_DATABASE,
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD
-});
+});*/
 
 // Conectar a la base de datos
 connection.connect();
