@@ -5,16 +5,13 @@ const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
 
-
 const {
     DB_HOST,
     DB_NAME,
     DB_PORT,
     DB_PASSWORD,
     DB_USER
-} = require ('./config.js');
-
-
+} = require ('../config');
 
 const session = require('express-session');
 const bcrypt = require('bcrypt');

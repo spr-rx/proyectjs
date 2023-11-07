@@ -9,8 +9,7 @@ const {
     DB_PORT,
     DB_PASSWORD,
     DB_USER
-} = require ('./config.js');
-
+} = require ('../config');
 
 const connection = mysql.createConnection({
     host: DB_HOST,

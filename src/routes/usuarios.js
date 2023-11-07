@@ -16,7 +16,7 @@ const {
     DB_PORT,
     DB_PASSWORD,
     DB_USER
-} = require ('./config.js');
+} = require ('../config');
 
 
 router.get('/', async (req, res) => {
