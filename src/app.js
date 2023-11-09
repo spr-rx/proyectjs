@@ -781,6 +781,85 @@ router.post('/login2', async (req, res) => {
 });
 
 
+app.get('/usuarios/eliminar_carpeta/sede/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        if (!id) {
+            return res.status(400).json({ message: 'Invalid ID' });
+        }
+
+        const sql = 'SELECT * FROM reportes WHERE id_carpeta IN (SELECT id FROM carpetas WHERE id_carpeta_nombre = ?);';
+
+        
+        const fs = require('fs');
+
+
+        const path = require('path');
+        const rutaDirectorioUploads = path.resolve(__dirname, 'uploads');
+       
+
+        // Ejecuta la consulta con la cláusula WHERE
+        connection.query(sql, [id], (error, results, fields) => {
+        if (error) throw error;
+
+
+
+        console.log(`SELECT * FROM reportes WHERE id_carpeta IN (SELECT id FROM carpetas WHERE id_carpeta_nombre = ${id};`);
+
+        // Define tu consulta SQL con la cláusula WHERE
+        //const sql = 'SELECT * FROM reportes WHERE id_carpeta = ?';
+
+        const fs = require('fs');
+        const path = require('path');
+        const rutaDirectorioUploads = path.resolve(__dirname, 'uploads');
+
+        // Ejecuta la consulta con la cláusula WHERE
+        //const queryResult = await connection.execute(sql, [id]);
+
+        //const results = queryResult.results; // Asegúrate de ajustar esto según la estructura de los datos devueltos
+
+        // Ahora, puedes trabajar con los resultados
+        for (let i = 0; i < results.length; i++) {
+            const carpeta = results[i];
+            console.log(carpeta)
+            // Resto del código para procesar los resultados
+        }
+
+        // Utiliza Promise.all para esperar a que todas las operaciones de eliminación se completen
+      Promise.all(results.map(async (carpeta) => {
+            const rutaArchivo = path.join(rutaDirectorioUploads, `${carpeta.nombre}`);
+            const nombreDelArchivo = carpeta.id_drive;
+
+            try {
+                const authClient = await authorize();
+                await deleteFile(authClient, nombreDelArchivo);
+                console.log(`Eliminando el archivo con ID: ${nombreDelArchivo}`);
+            } catch (error) {
+                console.error("Error de autorización:", error);
+                // Maneja el error según tu lógica de la aplicación
+            }
+        }));
+
+        });
+
+       
+
+        // Elimina la carpeta de la base de datos después de que todos los archivos se hayan eliminado
+        const result = await connection.execute(`DELETE FROM carpetas WHERE id = ?;`, [id]);
+
+        console.log("iddd", id);
+
+        if (!result[0] || result[0].affectedRows === 0) {
+            return res.status(404).json({ message: 'Carpeta eliminada2' });
+        }
+
+        return res.status(200).json({ message: 'Carpeta deleted successfully' });
+    } catch (error) {
+        console.error("Error deleting carpeta:", error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 
 app.get('/usuarios/eliminar_carpeta/:id', async (req, res) => {
     const { id } = req.params;

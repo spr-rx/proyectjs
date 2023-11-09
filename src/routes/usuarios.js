@@ -263,6 +263,48 @@ router.get('/carpetas/admin/:id', async (req, res) => {
 })
 
 
+router.get('/carpetas/sede/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const ruc = req.session.user;
+        const carpetas = await querys.detalleCarpetasSede(id);
+        const idCarpeta = req.query.idCarpeta; 
+        
+
+        //const reportes = await querys.detalleSubCarpetas(idCarpeta);
+        
+        if (carpetas === null) {
+            return res.status(400).json({ message: 'user not found' });
+        }
+
+
+        return  res.render('detalle_carpetas_sede', { carpetas, id });
+        /*return res.send(`
+        <div style="display: flex; flex-direction: row; padding="20px" ">
+            ${reportes.map(reporte => `
+            <div style="margin-right: 10px;">
+                <img src="/imagenes/pdf.png" width="150px"> </img>
+                <span>${reporte.nombre}</span>
+                <button onclick="verReporte('${reporte.ruta}')">Ver en pantalla completa</button>
+            </div>
+            `).join('')}
+        </div>  
+        <script>
+            function verReporte(url) {
+            // Abre el reporte en pantalla completa
+            window.open(url, '_blank', 'fullscreen=yes');
+            }
+        </script>
+        `);*/
+        
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal server error 2' });
+    }
+   
+})
+
+
 
 
 router.get('/carpetas/detalle/:id/:id_usuario', async (req, res) => {
@@ -415,6 +457,38 @@ router.post('/crear_carpeta', async (req, res) => {
 
 })
 
+
+
+
+router.get('/crear_carpeta/sede/:id', async (req, res) => {
+    const { id } = req.params;
+
+    res.render('form_carpeta_sede', {id})
+
+})
+
+router.post('/crear_carpeta/sede/', async (req, res) => {
+
+    try {
+        const { id, nombre } = req.body;
+        const id2 = 4;
+        
+
+        console.log("gaaaaaaaaaaaaaa")
+        console.log(id) 
+        console.log(nombre)
+        const carpetas = await querys.createCarpetaSede(id,nombre);
+        if (carpetas === null) { 
+            return res.status(400).json({ message: 'carpeta not found' });
+        }
+        return res.redirect(`carpetas/sede/admin/${id}`),res.write('<script>window.setTimeout(function(){location.reload();},2000);</script>'),res.end() ;
+        //res.json({ success: true, message: 'Carpeta creada correctamente' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+
+})
 
 
 

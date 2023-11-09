@@ -60,6 +60,12 @@ const detalleCarpetas = async (id) => {
     
 } 
 
+const detalleCarpetasSede = async (id) => {
+    const [query] = await connection.execute(`SELECT * FROM carpeta_nombre WHERE id_usuario = ?`, [id]);
+    return query
+    
+} 
+
 
 const detalleSubCarpetas = async (id) => {
     const [query] = await connection.execute(`SELECT * FROM reportes WHERE id_carpeta = ?`, [id]);
@@ -83,6 +89,24 @@ const createCarpeta = async (id, fecha) => {
         // Si alguno de los valores es undefined, lanza un error o maneja el caso según tus necesidades
         throw new Error('Los valores de id y fecha no pueden ser undefined.');
     }
+
+    
+}
+
+
+
+const createCarpetaSede = async (id, nombre) => {
+    // Verifica que los valores no sean undefined
+    if (id !== undefined && nombre !== undefined) {
+        const [query] = await connection.execute(`INSERT INTO carpeta_nombre (id_usuario, nombre) VALUES (?, ?)`, [id, nombre]);
+        const item = await getUsuariosById(query.insertId);
+        return item;    
+    } else {
+        // Si alguno de los valores es undefined, lanza un error o maneja el caso según tus necesidades
+        throw new Error('Los valores de id y fecha no pueden ser undefined.');
+    }
+
+    
 }
 
 const login = async(ruc, password) => {
@@ -147,4 +171,4 @@ const deleteCarpeta = async (id) => {
 
 
 
-module.exports = {getAllUsuarios, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}
+module.exports = {getAllUsuarios, createCarpetaSede, detalleCarpetasSede, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}
