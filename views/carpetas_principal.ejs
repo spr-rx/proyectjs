@@ -282,18 +282,19 @@
                 
                     <div class="folder-container">
                         <% carpetas.forEach(carpeta => { %>
-                            <div class="carpeta" data-id="<%= carpeta.id %>">
-                                <div class="folder">
-                                    <img src="/imagenes/carpeta_principal.png"
-                                        alt="Icono de Carpeta">
-                                    <p>ID: <%= carpeta.id %></p>
-                                    <% const opcionesFecha = { year: "numeric", month: "long" }; %>
-                                    <% const fecha = new Date(carpeta.fecha).toLocaleDateString('es-ES', opcionesFecha); %>
-                                    <h3>Fecha: <%= fecha %></h3>
-                                    
-                                    
+                            <a href="/carpetas?id_carpeta=<%= carpeta.id %>" class="carpeta" data-id="<%= carpeta.id %>">
+                                <div class="carpeta" data-id="<%= carpeta.id %>">
+                                    <div class="folder">
+                                        <img src="/imagenes/carpeta_principal.png"
+                                            alt="Icono de Carpeta">
+                                        <p>ID: <%= carpeta.id %></p>
+                                        <
+                                        <h3>sede: <%= carpeta.nombre %></h3>
+                                        
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
+                           
                             
                         <% }); %>
                     </div>

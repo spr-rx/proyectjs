@@ -1,6 +1,6 @@
 const express = require('express')
 const usuarios = require('./routes/usuarios');
-const { getAllUsuarios, getUsuariosById,getAllReportesCarpeta, createUser, updateUser, deleteUser, getAllCarpetas, getAllReportes, todosCarpetas, todosReportes } = require('./querys');
+const { getAllUsuarios, getUsuariosById,getAllReportesCarpeta, createUser, updateUser, deleteUser, getAllCarpetas, getAllReportes, todosCarpetas, todosReportes, getAllCarpetasSede } = require('./querys');
 const fs = require('fs');
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
@@ -173,7 +173,30 @@ app.get('/ver_reporte', (req, res) => {
 
 
 
-app.get('/carpetas',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
+app.get('/carpetas',  requireAuth,  async (req, res) =>{
+    const id_carpeta = req.query.id_carpeta;
+    const ruc = req.session.user;
+
+    const usuarioIdEnURL = parseInt(req.query.id); // Obtener el ID de la URL y convertirlo a número entero
+        const usuarioIdAutenticado = req.session.id;
+    
+ 
+
+
+    const carpetas = await getAllCarpetas(id_carpeta);
+    const reportes = await getAllReportes(id_carpeta);
+
+    const rango = carpetas.length
+    const rango2 = reportes.length
+
+    
+    //  const filtro_reportes = filterReportes(id);
+    res.render('carpetas', { carpetas, ruc, rango, rango2 });
+} ) 
+
+
+
+app.get('/carpetas/sede',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
     const id = req.query.id;
     const ruc = req.session.user;
 
@@ -183,7 +206,7 @@ app.get('/carpetas',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
  
 
 
-    const carpetas = await getAllCarpetas(id);
+    const carpetas = await getAllCarpetasSede(id);
     const reportes = await getAllReportes(id);
 
     const rango = carpetas.length
@@ -191,8 +214,9 @@ app.get('/carpetas',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
 
     
     //  const filtro_reportes = filterReportes(id);
-    res.render('carpetas', { carpetas, ruc, rango, rango2 });
+    res.render('carpetas_principal', { carpetas, ruc, rango, rango2 });
 } ) 
+
 
 
 
@@ -327,10 +351,10 @@ app.post('/uploads', upload.single('file'), (req, res) => {
   res.status(200).send('Archivo subido correctamente.');
 });
 
-app.get('/usuarios/carpetas/crear_reportes/:id/:id_usuario', (req, res) => {
-    const { id } = req.params;
-    const { id_usuario } = req.params;
-    res.render('carga_archivos', {id, id_usuario});
+app.get('/usuarios/carpetas/crear_reportes/:carpeta/:sede', (req, res) => {
+    const { carpeta } = req.params;
+    const { sede } = req.params;
+    res.render('carga_archivos', {carpeta, sede});
     
     
 });
@@ -397,11 +421,11 @@ app.get("/auth2", (req, res) => {
 });
 
 
-app.post('/usuarios/carpetas/crear_reportes/:id/:id_usuario', async (req, res) => {
+app.post('/usuarios/carpetas/crear_reportes/:carpeta/:sede', async (req, res) => {
 
 
-    const { id } = req.params;
-    const { id_usuario } = req.params;
+    const { carpeta } = req.params;
+    const { sede } = req.params;
     const file = req.files.file;
     const nombreOriginal = file.name;
 
@@ -487,8 +511,8 @@ app.post('/usuarios/carpetas/crear_reportes/:id/:id_usuario', async (req, res) =
                     const uploadedFileUrl = `https://drive.google.com/uc?id=${file.data.id}`;
                     const id_drive = file.data.id;
                     //res.json({ message: "Archivo subido correctamente a Google Drive" });
-                    const sql = 'INSERT INTO reportes (id_usuario, nombre, id_carpeta,  ruta, id_drive) VALUES (?, ?, ?, ?, ?)';
-                    const values = [id_usuario, nombreLimpio, id, uploadedFileUrl, id_drive];
+                    const sql = 'INSERT INTO reportes (id_carpeta_nombre, nombre, id_carpeta,  ruta, id_drive) VALUES (?, ?, ?, ?, ?)';
+                    const values = [sede, nombreLimpio, carpeta, uploadedFileUrl, id_drive];
 
                     connection.query(sql, values, (err, result) => {
                         if (err) {
@@ -728,7 +752,7 @@ app.post('/login', (req, res) => {
                     res.redirect('/usuarios')
     
                 }else {
-                    res.redirect(`/carpetas?id=${id}`)
+                    res.redirect(`/carpetas/sede?id=${id}`)
                     
                 }
             } else{
@@ -845,7 +869,7 @@ app.get('/usuarios/eliminar_carpeta/sede/:id', async (req, res) => {
        
 
         // Elimina la carpeta de la base de datos después de que todos los archivos se hayan eliminado
-        const result = await connection.execute(`DELETE FROM carpetas WHERE id = ?;`, [id]);
+        const result = await connection.execute(`DELETE FROM carpeta_nombre WHERE id = ?;`, [id]);
 
         console.log("iddd", id);
 

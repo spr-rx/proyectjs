@@ -325,6 +325,24 @@ router.get('/carpetas/detalle/:id/:id_usuario', async (req, res) => {
 
 
 
+router.get('/carpetas/detalle2/:id/:id_usuario', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { id_usuario } = req.params;
+        const carpetas = await querys.detalleSubCarpetas(id);
+        if (carpetas === null) {
+            return res.status(400).json({ message: 'user not found' });
+        }
+        return  res.render('reportes_admin', { carpetas,id, id_usuario });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+   
+})
+
+
+
 
 router.get('/carpetas/detalle_user/:id', async (req, res) => {
     try {

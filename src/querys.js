@@ -17,15 +17,27 @@ const todosCarpetas = async () => {
 
 
 
-
-
-const getAllCarpetas = async (id) => {
-    const [query] = await connection.execute(`SELECT * FROM carpetas WHERE id_usuario = ? `, [id]);
+const getAllCarpetasSede = async (id) => {
+    const [query] = await connection.execute(`SELECT * FROM carpeta_nombre WHERE id_usuario = ? `, [id]);
     return query
 };
 
-const getAllReportes = async (id) => {
+
+const getAllCarpetas = async (id) => {
+    const [query] = await connection.execute(`SELECT * FROM carpetas WHERE id_carpeta_nombre = ? `, [id]);
+    return query
+};
+
+
+//SELECT * FROM reportes WHERE id_carpeta_nombre IN (SELECT id FROM carpeta_nombre WHERE id_usuario = ?);
+
+
+const getAllReportes2 = async (id) => {
     const [query] = await connection.execute(`SELECT * FROM reportes WHERE id_usuario = ? `, [id]);
+    return query
+};
+const getAllReportes = async (id) => {
+    const [query] = await connection.execute(`SELECT * FROM reportes WHERE id_carpeta_nombre IN (SELECT id FROM carpeta_nombre WHERE id_usuario = ?); `, [id]);
     return query
 };
 
@@ -55,7 +67,7 @@ const detalleUsuarios = async (id) => {
 
 
 const detalleCarpetas = async (id) => {
-    const [query] = await connection.execute(`SELECT * FROM carpetas WHERE id_usuario = ?`, [id]);
+    const [query] = await connection.execute(`SELECT * FROM carpetas WHERE id_carpeta_nombre = ?`, [id]);
     return query
     
 } 
@@ -82,7 +94,7 @@ const createUser = async (nombre, rol, ruc, password) => {
 const createCarpeta = async (id, fecha) => {
     // Verifica que los valores no sean undefined
     if (id !== undefined && fecha !== undefined) {
-        const [query] = await connection.execute(`INSERT INTO carpetas (id_usuario, fecha) VALUES (?, ?)`, [id, fecha]);
+        const [query] = await connection.execute(`INSERT INTO carpetas (id_carpeta_nombre, fecha) VALUES (?, ?)`, [id, fecha]);
         const item = await getUsuariosById(query.insertId);
         return item;    
     } else {
@@ -171,4 +183,4 @@ const deleteCarpeta = async (id) => {
 
 
 
-module.exports = {getAllUsuarios, createCarpetaSede, detalleCarpetasSede, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}
+module.exports = {getAllUsuarios, getAllCarpetasSede, createCarpetaSede, detalleCarpetasSede, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}

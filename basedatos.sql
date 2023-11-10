@@ -34,12 +34,12 @@ CREATE TABLE carpetas (
 
 CREATE TABLE reportes (
     id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-    id_usuario BIGINT UNSIGNED not null,
+    id_carpeta_nombre BIGINT UNSIGNED not null,
     nombre varchar(500),
     id_carpeta BIGINT UNSIGNED not null,
     ruta varchar(500),
     id_drive varchar(200),
-    foreign key (id_usuario) references usuarios(id) on delete cascade on update cascade,
+    foreign key (id_carpeta_nombre) references carpeta_nombre(id) on delete cascade on update cascade,
     foreign key (id_carpeta) references carpetas(id) on delete cascade on update cascade
 );
 
