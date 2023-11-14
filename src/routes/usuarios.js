@@ -114,6 +114,7 @@ const connection = mysql.createConnection({
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
+    keepAlive: true,
 
     
     
@@ -299,7 +300,7 @@ router.get('/carpetas/sede/:id', async (req, res) => {
         
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'internal server error 2' });
+        return res.status(500).json({ message: 'internal server error 2' });detalle
     }
    
 })

@@ -13,6 +13,7 @@ const connection =  mysql.createPool({
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
+    keepAlive: true,
 
     
     

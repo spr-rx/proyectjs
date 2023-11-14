@@ -271,6 +271,7 @@ const connection = mysql.createConnection({
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
+    keepAlive: true,
 
     
     
