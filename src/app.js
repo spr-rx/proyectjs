@@ -524,14 +524,22 @@ app.post('/usuarios/carpetas/crear_reportes/:carpeta/:sede', async (req, res) =>
                     const sql = 'INSERT INTO reportes (id_carpeta_nombre, nombre, id_carpeta,  ruta, id_drive) VALUES (?, ?, ?, ?, ?)';
                     const values = [sede, nombreLimpio, carpeta, uploadedFileUrl, id_drive];
 
-                    connection.query(sql, values, (err, result) => {
-                        if (err) {
-                            console.error(err);
-                            return res.status(500).send('Error al subir el archivo a la base de datos');
-                        }
-                        console.log('Archivo subido a la base de datos');
-                        res.status(200).send(`Archivo ${file.name} subido correctamente.`);
-                    });
+                    
+
+                    let connection;
+                    try {
+                    connection = await pool.getConnection();
+                    const [result] = await connection.execute(sql, values);
+                    console.log('Archivo subido a la base de datos');
+                    res.status(200).send(`Archivo ${file.name} subido correctamente.`);
+                    } catch (error) {
+                    console.error(error);
+                    res.status(500).send('Error al subir el archivo a la base de datos');
+                    } finally {
+                    if (connection) {
+                        connection.release();
+                    }
+                    }
                 }
             });
         })
