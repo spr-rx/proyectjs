@@ -517,29 +517,37 @@ app.post('/usuarios/carpetas/crear_reportes/:carpeta/:sede', async (req, res) =>
                 
                 
                 
-                    console.log("Archivo subido correctamente. ID:", file.data.id);
-                    const uploadedFileUrl = `https://drive.google.com/uc?id=${file.data.id}`;
-                    const id_drive = file.data.id;
-                    //res.json({ message: "Archivo subido correctamente a Google Drive" });
-                    const sql = 'INSERT INTO reportes (id_carpeta_nombre, nombre, id_carpeta,  ruta, id_drive) VALUES (?, ?, ?, ?, ?)';
-                    const values = [sede, nombreLimpio, carpeta, uploadedFileUrl, id_drive];
-
-                    
-
-                    let connection;
-                    try {
-                    connection = await pool.getConnection();
-                    const [result] = await connection.execute(sql, values);
-                    console.log('Archivo subido a la base de datos');
-                    res.status(200).send(`Archivo ${file.name} subido correctamente.`);
-                    } catch (error) {
-                    console.error(error);
-                    res.status(500).send('Error al subir el archivo a la base de datos');
-                    } finally {
-                    if (connection) {
-                        connection.release();
-                    }
-                    }
+                        const uploadFileToDatabase = async (sede, nombreLimpio, carpeta, file) => {
+                            let connection;
+                            try {
+                              const uploadedFileUrl = `https://drive.google.com/uc?id=${file.data.id}`;
+                              const id_drive = file.data.id;
+                          
+                              const sql = 'INSERT INTO reportes (id_carpeta_nombre, nombre, id_carpeta,  ruta, id_drive) VALUES (?, ?, ?, ?, ?)';
+                              const values = [sede, nombreLimpio, carpeta, uploadedFileUrl, id_drive];
+                          
+                              connection = await pool.getConnection();
+                              const [result] = await connection.execute(sql, values);
+                          
+                              console.log('Archivo subido a la base de datos');
+                              return `Archivo ${file.name} subido correctamente.`;
+                            } catch (error) {
+                              console.error('Error al subir el archivo a la base de datos:', error);
+                              throw new Error('Error al subir el archivo a la base de datos');
+                            } finally {
+                              if (connection) {
+                                connection.release();
+                              }
+                            }
+                          };
+                          
+                          // Llamada a la función
+                          try {
+                            const message = await uploadFileToDatabase(sede, nombreLimpio, carpeta, file);
+                            res.status(200).send(message);
+                          } catch (error) {
+                            res.status(500).send('Error al subir el archivo a la base de datos');
+                          }
                 }
             });
         })
