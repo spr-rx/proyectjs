@@ -50,8 +50,8 @@ app.set('view engine', 'ejs');
 const pool = require('./connection');
 
 const redisClient = redis.createClient({
-    host: 'localhost', // Reemplaza con la dirección de tu servidor Redis
-    port: 6379,        // Reemplaza con el puerto de tu servidor Redis
+    host: 'roundhouse.proxy.rlwy.net', // Reemplaza con la dirección de tu servidor Redis
+    port: 47689,        // Reemplaza con el puerto de tu servidor Redis
   });
   
 
