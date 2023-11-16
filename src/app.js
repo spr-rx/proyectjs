@@ -9,10 +9,6 @@ const config = require('./config');
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
 const session = require('express-session');
-const RedisStore = require('connect-redis')(session);
-const redis = require('redis');
-
-
 const bcrypt = require('bcrypt');
 const multer = require('multer');
  
@@ -49,22 +45,13 @@ app.set('view engine', 'ejs');
 
 const pool = require('./connection');
 
-const redisClient = redis.createClient({
-    host: 'roundhouse.proxy.rlwy.net', // Reemplaza con la dirección de tu servidor Redis
-    port: 47689,        // Reemplaza con el puerto de tu servidor Redis
-  });
-  
 
+app.use(session({
+    secret: 'your-secret-key',
+    resave: false,
+    saveUninitialized: true
+}));
 
-
-app.use(
-    session({
-      store: new RedisStore({ client: redisClient }),
-      secret: 'your-secret-key',
-      resave: false,
-      saveUninitialized: true,
-    })
-  );
 
 const  PORT = process.env.PORT || 3000
 
