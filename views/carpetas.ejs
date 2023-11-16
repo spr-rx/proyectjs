@@ -280,7 +280,7 @@
 
                     <h1>Encuentra aqui todos tus reportes solicitados</h1>
                 
-                    <div class="folder-container">
+                    <div class="folder-container" onclick="expandirCarpeta()" >
                         <% carpetas.forEach(carpeta => { %>
                             <div class="carpeta" data-id="<%= carpeta.id %>">
                                 <div class="folder">
@@ -547,6 +547,17 @@
     
     
   </footer><!-- End Footer -->
+
+  <script>
+      function expandirCarpeta() {
+    var contenido = document.getElementById("reportes");
+
+    
+      contenido.scrollIntoView({ behavior: "smooth" });
+    
+}
+  </script>
+
 
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
