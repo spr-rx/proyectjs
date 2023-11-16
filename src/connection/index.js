@@ -13,12 +13,17 @@ const connection =  mysql.createPool({
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
-    keepAlive: true,
+    waitForConnections: true,
+    connectionLimit: 10, // Puedes ajustar este límite según tus necesidades
+    queueLimit: 0
+    
 
     
     
 });
 /*
+
+keepAlive: true,
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     port: process.env.DB_PORT,

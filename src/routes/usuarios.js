@@ -114,7 +114,9 @@ const connection = mysql.createConnection({
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
-    keepAlive: true,
+    waitForConnections: true,
+    connectionLimit: 10, // Puedes ajustar este límite según tus necesidades
+    queueLimit: 0
 
     
     

@@ -43,7 +43,7 @@ app.use(express.static(path.join(__dirname, '../front/build')))
 app.set('view engine', 'ejs');
 
 
-
+const pool = require('./connection');
 
 
 app.use(session({
@@ -263,19 +263,29 @@ app.use('/usuarios', requireAuth, usuarios)
 
 
 
+/*
 
-
-const connection = mysql.createConnection({
+const connection =  mysql.createPool({
     host: DB_HOST,
     port: DB_PORT,
     database: DB_NAME,
     user: DB_USER,
     password: DB_PASSWORD,
-    keepAlive: true,
+    waitForConnections: true,
+    connectionLimit: 10, // Puedes ajustar este límite según tus necesidades
+    queueLimit: 0
+    
 
     
     
-});
+});*/
+
+// Conectar a la base de datos
+
+
+//connection.connect();
+
+
 /*
 const connection = mysql.createConnection({
     host: "roundhouse.proxy.rlwy.net",
@@ -301,8 +311,7 @@ const connection = mysql.createConnection({
 });*/
 
 
-// Conectar a la base de datos
-connection.connect();
+
 
 
 /*
@@ -691,6 +700,8 @@ app.post('/uploads2', upload.single('file'), (req, res) => {
         console.log('Archivo subido a la base de datos');
         res.status(200).send('Archivo subido correctamente');
       }
+
+      
     });
   });
 
@@ -700,75 +711,44 @@ app.post('/uploads2', upload.single('file'), (req, res) => {
 
 
 
-
-app.post('/login', (req, res) => {
+  app.post('/login', async (req, res) => {
     const ruc = req.body.ruc;
     const password = req.body.password;
-
-    // Consultar la base de datos para encontrar el usuario
-    //connection.query('SELECT * FROM usuarios WHERE ruc = ? AND password = ?', [ruc, password], async (error, results) => {
-    connection.query('SELECT * FROM usuarios WHERE ruc = ? ', [ruc], async (error, results) => {
-
-        
-        if (error) throw error;
-
-        if (results.length > 0) {
-            const user = results[0];
-            const hashedPassword = user.password;
-            
-
-            
-
-
-            const match = await bcrypt.compare(password, hashedPassword);
-
-            // Verifica la contraseña proporcionada al iniciar sesión
-            const isPasswordCorrect = bcrypt.compareSync(password, hashedPassword);
-
-
-            
-
-            
-
-            req.session.user = ruc;
-
-            req.session.admin = user.id_rol
-
-            req.session.primary = user.id
-        
-
-            //const user = results[0];
-            
-
-
-            const id = user.id;
-
-
-            console.log('golllaa')
-            console.log(user.ruc)
-
-            if( isPasswordCorrect == true){
-
-                if(user.id_rol == 2){
-                    res.redirect('/usuarios')
-    
-                }else {
-                    res.redirect(`/carpetas/sede?id=${id}`)
-                    
-                }
-            } else{
-                res.redirect('/?mensaje=Tu contraseña es incorrecta');
-            }
-            
-
-            
-            
+  
+    try {
+      const [results] = await pool.execute('SELECT * FROM usuarios WHERE ruc = ? ', [ruc]);
+  
+      if (results.length > 0) {
+        const user = results[0];
+        const hashedPassword = user.password;
+  
+        const isPasswordCorrect = bcrypt.compareSync(password, hashedPassword);
+  
+        req.session.user = ruc;
+        req.session.admin = user.id_rol;
+        req.session.primary = user.id;
+  
+        const id = user.id;
+  
+        if (isPasswordCorrect) {
+          if (user.id_rol == 2) {
+            res.redirect('/usuarios');
+          } else {
+            res.redirect(`/carpetas/sede?id=${id}`);
+          }
         } else {
-            res.redirect('/?mensaje=El ruc esta incorrecto');
-        }   
-    });
-});
-
+          res.send('Tu contraseña es incorrecta.');
+        }
+      } else {
+        res.send('El ruc que proporcionaste es incorrecto.');
+      }
+    } catch (error) {
+      console.error('Error en el proceso de inicio de sesión:', error);
+      res.status(500).send('Error en el servidor.');
+    }
+  });
+  
+  
 
 router.post('/login2', async (req, res) => {
     const { ruc, password } = req.body;
