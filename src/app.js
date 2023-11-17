@@ -189,10 +189,33 @@ app.get('/ver_reporte', (req, res) => {
 
 
 
+async function esUsuarioAutorizadoCarpeta(req, res, next) {
+  const usuarioIdEnURL = parseInt(req.query.id_carpeta); // Obtener el ID de la URL y convertirlo a número entero
+  const usuarioIdAutenticado = req.session.primary; // Obtener el ID del usuario autenticado desde la sesión o el token
+  
+
+  console.log(usuarioIdEnURL)
+  console.log(usuarioIdAutenticado)
+
+  const [results] = await pool.execute('SELECT usuarios.* FROM usuarios JOIN carpeta_nombre ON usuarios.id = carpeta_nombre.id_usuario JOIN carpetas ON carpeta_nombre.id = carpetas.id_carpeta_nombre WHERE usuarios.id = ? AND carpeta_nombre.id = ?; ', [usuarioIdAutenticado, usuarioIdEnURL]);
+
+  if (results.length > 0) {
+      // El usuario autenticado tiene permiso para acceder a esta ruta
+      next();
+  } else {
+      // Acceso prohibido si el ID en la URL no coincide con el ID del usuario autenticado
+      res.render("error404")
+      //res.status(403).json({ mensaje: 'Acceso prohibido' });
+  }
+}
 
 
 
-app.get('/carpetas',  requireAuth,  async (req, res) =>{
+
+
+app.get('/carpetas',  requireAuth, esUsuarioAutorizadoCarpeta,  async (req, res) =>{
+ 
+
     const id_carpeta = req.query.id_carpeta;
     const ruc = req.session.user;
 
