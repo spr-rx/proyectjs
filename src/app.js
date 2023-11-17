@@ -579,14 +579,22 @@ app.post('/usuarios/carpetas/crear_reportes/:carpeta/:sede', async (req, res) =>
                             } finally {
                               if (connection) {
                                 connection.release();
+                                
+                               
                               }
+
+                              
                             }
                           };
                           
                           // Llamada a la función
                           try {
                             const message = await uploadFileToDatabase(sede, nombreLimpio, carpeta, file);
-                            res.status(200).send(message);
+                           
+                            //res.status(200).send(message);
+                            res.redirect(`/usuarios/carpetas/detalle/${carpeta}/${sede}`);
+                            return;
+                            
                           } catch (error) {
                             res.status(500).send('Error al subir el archivo a la base de datos');
                           }
@@ -602,7 +610,7 @@ app.post('/usuarios/carpetas/crear_reportes/:carpeta/:sede', async (req, res) =>
         const fileUrl = `https://drive.google.com/uc?id=${file.data.id}`;
 
         console.log(nombreLimpio)
-
+        //return res.redirect(`/usuarios/carpetas/detalle/${carpeta}/${sede}`);
         //console.log('Archivo subido correctamente:', ruta);
 
         // Inserta la información del archivo en tu base de datos

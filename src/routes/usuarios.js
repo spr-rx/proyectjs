@@ -488,6 +488,9 @@ router.get('/crear_carpeta/sede/:id', async (req, res) => {
 
 })
 
+
+
+
 router.post('/crear_carpeta/sede/', async (req, res) => {
 
     try {
@@ -502,7 +505,7 @@ router.post('/crear_carpeta/sede/', async (req, res) => {
         if (carpetas === null) { 
             return res.status(400).json({ message: 'carpeta not found' });
         }
-        return res.redirect(`carpetas/sede/admin/${id}`),res.write('<script>window.setTimeout(function(){location.reload();},2000);</script>'),res.end() ;
+        return res.redirect(`/usuarios/carpetas/sede/${id}`),res.write('<script>window.setTimeout(function(){location.reload();},2000);</script>'),res.end() ;
         //res.json({ success: true, message: 'Carpeta creada correctamente' });
     } catch (error) {
         console.error(error);
