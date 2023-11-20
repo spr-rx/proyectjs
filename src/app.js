@@ -1042,11 +1042,13 @@ app.get('/usuarios/eliminar_carpeta/sede/:id', async (req, res) => {
   
     try {
       // Consulta la base de datos para obtener los reportes asociados al usuario
-      const [results] = await pool.execute('SELECT * FROM reportes WHERE id_usuario = ?', [id]);
+      const [results] = await pool.execute('SELECT r.* FROM reportes r JOIN carpeta_nombre cn ON r.id_carpeta_nombre = cn.id WHERE cn.id_usuario = ?;', [id]);
+
+      
   
       // Utiliza Promise.all para esperar a que todas las operaciones de eliminación se completen
       await Promise.all(results.map(async (carpeta) => {
-        const rutaArchivo = path.join(rutaDirectorioUploads, `${carpeta.nombre}`);
+        //const rutaArchivo = path.join(rutaDirectorioUploads, `${carpeta.nombre}`);
         const nombreDelArchivo = carpeta.id_drive;
   
         try {
