@@ -40,7 +40,7 @@ module.exports = {
         const [result] = await pool.promise().execute(sql, values);
         return result;
       } catch (error) {
-        console.error('Error en la consulta:', error);
+        console.error('Error en la consulta:', error); efwef
         throw error;
       }
     },  

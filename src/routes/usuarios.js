@@ -363,14 +363,14 @@ router.get('/carpetas/detalle_user/:id', async (req, res) => {
     }
    
 }) 
-
+//muy byebis duas
 
 router.get('/carpetas/detalle_user', async (req, res) => {
     try {
         const { id } = req.query.idCarpeta;
         const reportes = await querys.detalleSubCarpetas(id);
 
-        console.log("si esta enviando la señal")
+        console.log("si esta enviando la señal de detalle_user")
 
         if (reportes === null) {
             return res.status(400).json({ message: 'user not found' });
@@ -462,6 +462,32 @@ router.post('/crear_carpeta', async (req, res) => {
     try {
         const { id, fecha } = req.body;
         const id2 = 4;
+        console.log(id2)
+        
+
+        console.log("gaaaaaaaaaaaaaa")
+        console.log(id) 
+        console.log(fecha)
+        const carpetas = await querys.createCarpeta(id,fecha);
+        if (carpetas === null) {
+            return res.status(400).json({ message: 'carpeta not found' });
+        }
+        return res.redirect(`carpetas/admin/${id}`),res.write('<script>window.setTimeout(function(){location.reload();},2000);</script>'),res.end() ;
+        //res.json({ success: true, message: 'Carpeta creada correctamente' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+
+})
+
+
+router.post('/crear_carpeta23242', async (req, res) => {
+
+    try {
+        const { id, fecha } = req.body;
+        const id2 = 4;
+        console.log(id2)
         
 
         console.log("gaaaaaaaaaaaaaa")
