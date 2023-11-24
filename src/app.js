@@ -236,7 +236,7 @@ app.get('/carpetas',  requireAuth, esUsuarioAutorizadoCarpeta,  async (req, res)
     res.render('carpetas', { carpetas, ruc, rango, rango2 });
 } ) 
 
-
+//hola
 
 app.get('/carpetas/sede',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
     const id = req.query.id;
