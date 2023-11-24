@@ -107,6 +107,8 @@ router.get('/user', async (req, res) => {
 })
 
 
+/*
+
 
 const connection = mysql.createConnection({
     host: DB_HOST,
@@ -121,7 +123,7 @@ const connection = mysql.createConnection({
     
     
 });
-
+]/
 /*
 const connection = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -132,7 +134,7 @@ const connection = mysql.createConnection({
 });*/
 
 // Conectar a la base de datos
-connection.connect();
+//connection.connect();
 
 
 

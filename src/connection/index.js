@@ -7,7 +7,7 @@ const config = require('../config');
 const { DB_HOST, DB_USER, DB_PASSWORD, DB_NAME, DB_PORT } = config;
 
 
-const connection =  mysql.createPool({
+const pool =  mysql.createPool({
     host: DB_HOST,
     port: DB_PORT,
     database: DB_NAME,
@@ -32,5 +32,16 @@ const connection = mysql.createConnection({
     password: process.env.DB_PASSWORD
 });*/
 
-module.exports = connection.promise();
-
+module.exports = pool.promise();
+/*
+module.exports = {
+    execute: async (sql, values) => {
+      try {
+        const [result] = await pool.promise().execute(sql, values);
+        return result;
+      } catch (error) {
+        console.error('Error en la consulta:', error);
+        throw error;
+      }
+    },  
+  };*/

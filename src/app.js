@@ -1087,6 +1087,10 @@ app.get('/logout', (req, res) => {
             res.redirect('/'); // Redirige al usuario a la página de login después de cerrar sesión
         }
     });
+    pool.end(() => {
+      console.log('Pool de conexiones cerrado.');
+      process.exit(0);
+    });
 });
 
 
