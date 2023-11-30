@@ -45,6 +45,14 @@ CREATE TABLE reportes (
 
 
 
+CREATE TABLE comentarios (
+    id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    id_usuario BIGINT UNSIGNED NOT NULL,
+    comentario TEXT NOT NULL,
+    fecha_comentario TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    foreign key (id_usuario) references usuarios(id) on delete cascade on update cascade
+   
+);
 
 
 

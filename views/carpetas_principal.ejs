@@ -55,8 +55,82 @@
           background-color: black;
           color: white;
           font-size: 15px;
+          align-items: center;
+          align-content: center;
+          padding-left: 25%;
 
         }
+
+
+      .container-form {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .container-form-derecha {
+      max-width: 400px;
+      margin: 20px auto;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    .container-form-solicitud {
+      margin-top: 20px;
+    }
+
+    .form-solicitud {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-top: 10px;
+      color: #555;
+    }
+
+    input,
+    textarea {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      width: 100%;
+    }
+
+    button {
+      background-color: #4caf50;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+    .card-body-form{
+      display: flex;
+    }
+
+    .letra{
+      font-size: 11px;
+    }
+
+     
 
         
 
@@ -115,8 +189,8 @@
       <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
-    <div class="d-flex align-items-center centroide">
-        <div>
+    <div class="d-flex align-items-center centroide" >
+        <div class="letra">
             <h4>Servicios de Protección Radiológica</h1>
                 <p>Soluciones Integrales en Seguridad y Protección Radiológica <br>
                 Laboratorio Autorizado por el Instituto Peruano de Energía Nuclear <br>
@@ -303,6 +377,54 @@
                   
                 </div>
 
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+             <!-- Reports -->
+             <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+
+                    <li><a class="dropdown-item" href="#">Today</a></li>
+                    
+                  </ul>
+                </div>
+
+                <div class="card-body-form">
+                  <h5 class="card-title">Solicitud <span>/online</span></h5>
+
+                  <div class="container-form">
+
+                    <h1>Mensaje</h1>
+                
+                    <div class="container-form-solicitud">
+                      <form class="form-solicitud" action="/usuarios/crear_comentario" method="post">
+                
+                        <input style="display:none" type="text" id="id" name="id" value="<%= id %>" required>
+                        <label for="">Hola, empresa <%= nombre %> ¡Escribe tu consulta aquí!</label>
+                
+                        <label for="">¿Cuál es el problema?</label>
+                        <textarea id="comentario" name="comentario" rows="4" required></textarea>
+                
+                        <button type="submit">Enviar</button>
+                
+                      </form>
+                    </div>
+                
+                    <!-- Contenedor para mostrar los reportes -->
+                
+                  </div>
+
+                 
 
                 </div>
 
@@ -557,6 +679,41 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+
+  <!-- Agrega esto en el head de tu HTML -->
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.querySelector('.form-solicitud');
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();
+
+      const id = document.getElementById('id').value;
+      const comentario = document.getElementById('comentario').value;
+
+      try {
+        const response = await fetch('/usuarios/crear_comentario', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ id, comentario }),
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          alert(data.message);
+        } else {
+          alert('Error: ' + data.message);
+        }
+      } catch (error) {
+        console.error('Error al realizar la solicitud', error);
+      }
+    });
+  });
+</script>
+
 
 </body>
 

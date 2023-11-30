@@ -10,6 +10,22 @@ const getAllUsuarios = async () => {
   }
 };
 
+
+const getAllComentarios = async () => {
+  try {
+    const [query] = await pool.execute('SELECT * FROM comentarios');
+    return query;
+  } catch (error) {
+    console.error('Error al obtener todos los usuarios:', error);
+    throw error; // Lanza el error para que puedas verlo en la consola o manejarlo según tus necesidades
+  }
+};
+
+
+
+
+
+
 const todosReportes = async () => {
   try {
     const [query] = await pool.execute('SELECT * FROM reportes');
@@ -225,6 +241,30 @@ const createCarpetaSede = async (id, nombre) => {
   }
 };
 
+
+const createComentario = async (id, comentario) => {
+  try {
+    // Verifica que los valores no sean undefined
+    if (id !== undefined && comentario !== undefined) {
+      const [query] = await pool.execute(
+        `INSERT INTO comentarios (id_usuario, comentario) VALUES (?, ?)`,
+        [id, comentario]
+      );
+
+      const item = await getUsuariosById(query.insertId);
+      return item;
+    } else {
+      // Si alguno de los valores es undefined, lanza un error o maneja el caso según tus necesidades
+      throw new Error('Los valores de id y nombre no pueden ser undefined.');
+    }
+  } catch (error) {
+    console.error('Error al crear carpeta sede:', error);
+    throw error;
+  }
+};
+
+
+
 const login = async (ruc, password) => {
   try {
     const [query] = await pool.execute(`SELECT * FROM usuarios WHERE ruc = ? and password = ?`, [ruc, password]);
@@ -297,10 +337,10 @@ const deleteCarpeta = async (id) => {
 
 
 
-//falta el delete
+//falta el delete 
 
 //https://community.listopro.com/realiza-un-crud-en-mysql-con-node-js/
 
 
 
-module.exports = {getAllUsuarios, getAllCarpetasSede, createCarpetaSede, detalleCarpetasSede, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}
+module.exports = {getAllUsuarios, getAllComentarios, getAllCarpetasSede, createComentario, createCarpetaSede, detalleCarpetasSede, getAllReportesCarpeta, getUsuariosById,getAllReportes, todosCarpetas, todosReportes, createUser, updateUser, deleteUser, detalleUsuarios, getAllCarpetas, detalleCarpetas, detalleSubCarpetas,createCarpeta,deleteCarpeta}

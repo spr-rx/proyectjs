@@ -66,6 +66,23 @@ router.post('/agregar_usuario',  async (req, res) => {
     }
 });
 
+router.get('/mensajes',  async (req, res) => {
+    try {
+       
+        const mensajes = await querys.getAllComentarios();
+        
+        if (mensajes === null) {
+            return res.status(400).json({ message: 'user not found' });
+        }
+        res.render('mensajes', { mensajes});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'internal server error' });
+    }
+});
+
+
+
 router.post('/editar', async (req, res) => {
     const { id, nombre, rol, ruc, password } = req.body;
 
@@ -543,6 +560,25 @@ router.post('/crear_carpeta/sede/', async (req, res) => {
 })
 
 
+router.post('/crear_comentario', async (req, res) => {
+    try {
+      const { id, comentario } = req.body;
+  
+      // Aquí deberías realizar tu lógica de almacenamiento de comentario
+  
+      // Supongamos que la lógica fue exitosa
+      const comentarioGuardado = await querys.createComentario(id, comentario);
+  
+      if (!comentarioGuardado) {
+        return res.status(400).json({ success: false, message: 'Error al guardar el comentario' });
+      }
+  
+      return res.status(200).json({ success: true, message: 'Comentario enviado correctamente' });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: 'Error interno del servidor' });
+    }
+  });
 
 
 

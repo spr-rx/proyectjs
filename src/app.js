@@ -136,6 +136,11 @@ app.get('/usuarios/agregar_usuario', requireAuth, async (req, res) => {
     res.render('agregar')
 })
 
+app.get('/usuarios/mensajes2', requireAuth, async (req, res) => {
+  res.render('mensajes')
+})
+
+
 
 
 const jwt = require('jsonwebtoken');
@@ -241,6 +246,7 @@ app.get('/carpetas',  requireAuth, esUsuarioAutorizadoCarpeta,  async (req, res)
 app.get('/carpetas/sede',  requireAuth, esUsuarioAutorizado,  async (req, res) =>{
     const id = req.query.id;
     const ruc = req.session.user;
+    const nombre = req.session.nombre_empresa;
 
     const usuarioIdEnURL = parseInt(req.query.id); // Obtener el ID de la URL y convertirlo a número entero
         const usuarioIdAutenticado = req.session.id;
@@ -256,7 +262,7 @@ app.get('/carpetas/sede',  requireAuth, esUsuarioAutorizado,  async (req, res) =
 
     
     //  const filtro_reportes = filterReportes(id);
-    res.render('carpetas_principal', { carpetas, ruc, rango, rango2 });
+    res.render('carpetas_principal', { carpetas, ruc, rango, rango2, nombre, id });
 } ) 
 
 
@@ -793,6 +799,7 @@ app.post('/uploads2', upload.single('file'), (req, res) => {
         req.session.user = ruc;
         req.session.admin = user.id_rol;
         req.session.primary = user.id;
+        req.session.nombre_empresa = user.nombre_empresa;
   
         const id = user.id;
   
